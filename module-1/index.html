@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Lunch Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/bootstrap.min.css">
+  <style>
+    .message { font-size: 1.3em; font-weight: bold; }
+  </style>
+</head>
+
+<!-- declare ng-app on the "body" tag -->
+<body ng-app="LunchCheck">
+  <!-- declare ng-controller on the div tag -->
+  <div ng-controller="LunchCheckController" class="container">
+    <h1>Lunch Checker</h1>
+
+    <div class="form-group {{border}}">
+      <!-- annotate input with AngularJS syntax -->
+      <input id="lunch-menu"
+        type="text"
+        placeholder="list comma separated dishes you usually have for lunch"
+        ng-model="textbox"
+        class="form-control">
+    </div>
+    <div class="form-group">
+      <!-- annotate button with AngularJS syntax -->
+      <button ng-click="CheckIfTooMuch()" class="btn btn-default">Check If Too Much</button>
+    </div>
+    <div class="form-group message {{font}}">
+      <!-- annotate output message with AngularJS syntax -->
+      <!-- Your message can go here. -->
+      {{message}}
+    </div>
+  </div>
+
+</body>
+
+<!-- import AngularJS -->
+<script src="angular.min.js"></script>
+<!-- declare the angular module matching the ng-app -->
+<script src="app.js"></script>
+
+</html>
