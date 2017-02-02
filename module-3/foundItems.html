@@ -1,0 +1,12 @@
+<div class="row" ng-repeat="item in menuItems.foundItems">
+  <div class="col-sm-1">{{ item.short_name }}</div>
+  <div class="col-sm-3">{{ item.name }}</div>
+  <div class="col-sm-6" style="height:40px;overflow:hidden">{{ item.description }}</div>
+  <div class="col-sm-2">
+    <button class="btn btn-default" ng-click="menuItems.onRemove({index: $index});">
+        <span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"></span>
+        Don't want this one!
+    </button>
+  </div>
+</div>
+<div class="row error" ng-if="menuItems.nothingFound">Nothing found!</div>

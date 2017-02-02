@@ -6,32 +6,59 @@
   angular.module('NarrowItDownApp', [])
     .controller('NarrowItDownController', NarrowItDownController)
     .service('MenuSearchService', MenuSearchService)
-    .constant('APIBasePath', "http://davids-restaurant.herokuapp.com");
+    .directive('foundItems', FoundItems)
+    .constant('APIBasePath', "//davids-restaurant.herokuapp.com");
 
   NarrowItDownController.$inject = ['MenuSearchService'];
   // implement controller
   function NarrowItDownController(MenuSearchService) {
     console.log("Initializing NarrowItDown controller...");
     var menuChoice = this;
-    // declare found as an array attached to the controller instance
+    // initialize found as an array attached to the controller instance
     menuChoice.found = [];
-    // declare the search term
+    // initialize the search term
     menuChoice.searchTerm = "";
-    // declare and expose to the view a function to handle the call to the restaurant server
+    // initialize the nothing found indicator
+    menuChoice.nothing = false;
+    // declare and expose a function to handle the call to the restaurant server
     menuChoice.getMatchedMenuItems = function(searchTerm) {
       console.log("Calling getMatchedMenuItems function from controller...");
-      // get the menu items from the server and pass the search term to narrow the list
-      // it returns a promise
-      MenuSearchService.getMenuItems(searchTerm)
-        .then(function (response) {
-          console.log("Filtered data returned by the promise...");
-          console.log(response);
-          menuChoice.found = response;
-        })
-        .catch(function (error) {
-          console.log("Error calling the restaurant server");
-        });
+      // if search term is empty then just return the nothing found message
+      if ( searchTerm == "" ) {
+        console.log("No item matching the search term found...");
+        menuChoice.nothing = true;
+      } else {
+        // get the menu items from the server and pass the search term to narrow the list
+        // it returns a promise
+        MenuSearchService.getMenuItems(searchTerm)
+          .then(function (response) {
+            console.log("Number of filtered data returned by the promise...");
+            console.log(response.length);
+            menuChoice.found = response;
+            // if nothing found then return the nothing found message
+            if (menuChoice.found.length == 0 ) {
+              console.log("No item matching the search term found...");
+              menuChoice.nothing = true;
+            } else {
+              menuChoice.nothing = false;
+            }
+          })
+          .catch(function (error) {
+            console.log("Error calling the server");
+          });
+      };
     };
+
+    // declare and expose a function to handle the item removal from the list
+    menuChoice.removeItem = function(itemIndex) {
+      console.log("Removing Item " + itemIndex);
+      menuChoice.found.splice(itemIndex, 1);
+    };
+  }
+
+  function FoundItemsDirectiveController() {
+    var menuItems = this;
+
   }
 
   MenuSearchService.$inject = ['$http', 'APIBasePath'];
@@ -42,6 +69,9 @@
 
     service.getMenuItems = function(searchTerm) {
       console.log("Calling getMenuItems function from service...");
+
+      var response = []
+
       return $http({
         // no parameter is passed as the narrowItDown logic is not performed on server side
         method: "GET",
@@ -50,27 +80,48 @@
         .then(function (result) {
           console.log("Unfiltered data returned by the server...");
           console.log(result);
-          // process result and only keep items that match
-          var foundItems = result.data.menu_items.filter(filterBySearchTerm);
-          // return processed items
-          console.log("The search term passed is...");
-          console.log(searchTerm);
-          return foundItems;
+          if ( searchTerm == "" ) {
+            console.log("The search term is empty...");
+            // empty search term isn't processed
+            response = [];
+          } else {
+            // process result and only keep items that match
+            response = result.data.menu_items.filter(filterBySearchTerm);
+            // return processed items
+            console.log("The search term passed is...");
+            console.log(searchTerm);
+
+          }
+          // return result to the caller
+          return response;
         }
       );
 
       // define a filter to apply to the array of returned values
       function filterBySearchTerm(item) {
-        var found = false;
+
         // lowercase everything before comparison to ignore case
-        var _searchTerm = searchTerm.toLowerCase();
-        var _description = item.description.toLowerCase();
-        if (_description.search(_searchTerm) != -1) {
-          found = true;
-        }
-        return found;
-      }
-    }
+        return item.description.toLowerCase().search(searchTerm.toLowerCase()) + 1;
+      };
+    };
+
+  }
+
+  // implement custom directive
+  function FoundItems() {
+    // define and return the DDO 
+    return {
+      restrict: 'E',
+      templateUrl: 'foundItems.html',
+      scope: {
+        foundItems: '<',
+        nothingFound: '<',
+        onRemove: '&'
+      },
+      controller: FoundItemsDirectiveController,
+      controllerAs: 'menuItems',
+      bindToController: true
+    };
   }
 
 }) ();
