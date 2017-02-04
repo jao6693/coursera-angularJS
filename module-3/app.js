@@ -21,16 +21,18 @@
     // initialize the nothing found indicator
     menuChoice.nothing = false;
     // declare and expose a function to handle the call to the restaurant server
-    menuChoice.getMatchedMenuItems = function(searchTerm) {
+    menuChoice.getMatchedMenuItems = function() {
       console.log("Calling getMatchedMenuItems function from controller...");
       // if search term is empty then just return the nothing found message
-      if ( searchTerm == "" ) {
+      if ( menuChoice.searchTerm == "" ) {
+        // clear current list
+        menuChoice.found = [];
         console.log("No item matching the search term found...");
         menuChoice.nothing = true;
       } else {
         // get the menu items from the server and pass the search term to narrow the list
         // it returns a promise
-        MenuSearchService.getMenuItems(searchTerm)
+        MenuSearchService.getMenuItems(menuChoice.searchTerm)
           .then(function (response) {
             console.log("Number of filtered data returned by the promise...");
             console.log(response.length);
