@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to David's Restaurant!!</h1>
+    <p>Check out what's on the menu today</p>
+    <p><a class="btn btn-primary btn-lg disabled" ui-sref="categories" role="button">Categories</a></p>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-5">
+      <h3>Categories</h3>
+      <categories categories="list.categories"></categories>
+    </div>
+    <div class="col-xs-5">
+      <h3>Items for selected category</h3>
+      <ui-view></ui-view>
+    </div>
+  </div>
+</div>
