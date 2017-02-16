@@ -1,0 +1,104 @@
+<div class="container">
+  <form name="regForm" novalidate>
+    <div class="form-group row">
+      <label for="firstname" class="col-sm-3 col-form-label">First name</label>
+      <div class="col-sm-4">
+        <input
+          ng-model="signupCtrl.info.firstname"
+          required
+          minlength="4"
+          class="form-control"
+          type="text"
+          placeholder="Your first name"
+          id="firstname"
+          name="firstname"
+          >
+        <!--
+        <span
+          ng-if="(regForm.firstname.$error.minlength || regForm.firstname.$error.required) && regForm.firstname.$touched">
+            First name must be at least 4 characters long
+        </span>
+        -->
+        <div class="col-sm-3"
+          ng-if="(regForm.firstname.$error.minlength || regForm.firstname.$error.required) && regForm.firstname.$touched">
+            First name must be at least 4 characters long
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="lastname" class="col-sm-3 col-form-label">Last name</label>
+      <div class="col-sm-4">
+        <input
+          ng-model="signupCtrl.info.lastname"
+          required
+          minlength="6"
+          class="form-control"
+          type="text"
+          placeholder="Your last name"
+          id="lastname"
+          name="lastname">
+        <span
+          ng-if="(regForm.lastname.$error.minlength || regForm.lastname.$error.required) && regForm.lastname.$touched">
+            Last name must be at least 6 characters long
+        </span>
+        <br>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">Email</label>
+      <div class="col-sm-4">
+        <input
+          ng-model="signupCtrl.info.email"
+          required
+          class="form-control"
+          type="email"
+          placeholder="Your email"
+          id="email"
+          name="email">
+        <span
+          ng-if="regForm.email.$invalid && regForm.email.$touched">
+            Email address is not valid: use handle@domain format
+        </span>
+        <br>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="phonenumber" class="col-sm-3 col-form-label">Telephone</label>
+      <div class="col-sm-2">
+        <input
+          ng-model="signupCtrl.info.phonenumber"
+          required
+          class="form-control"
+          type="tel"
+          pattern="\d{1}(-(\d{3}))?-\d{3}-\d{4}"
+          placeholder="1-(555)-555-5555"
+          id="phonenumber"
+          name="phonenumber">
+        <span ng-if="regForm.phonenumber.$invalid && regForm.phonenumber.$touched">
+           Phone must be in the format #-(###)-###-####
+        </span>
+        <br>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="favourite" class="col-sm-3 col-form-label">Favourite dish #</label>
+      <div class="col-sm-1">
+        <input
+          ng-model="signupCtrl.info.favourite"
+          required
+          class="form-control"
+          type="number"
+          id="favourite"
+          name="favourite"
+          favourite>
+      </div>
+    </div>
+    <div class="col-sm-8">
+    </div>
+    <button
+      class="btn btn-default"
+      ng-disabled="regForm.$invalid"
+      ng-click="signupCtrl.submit(signupCtrl.info.favourite)">Submit</button>
+    {{ signupCtrl.itemExist }}
+  </form>
+</div>
