@@ -1,0 +1,24 @@
+<div class="col-md-6">
+  <div class="row">
+    <p>Welcome {{ infoCtrl.info.firstname }} {{ infoCtrl.info.lastname }}!!</p>
+    <p>You have been successfully registered</p>
+    <p>your email address is {{ infoCtrl.info.email }}</p>
+    <p>Your phone number is {{ infoCtrl.info.phonenumber }}</p>
+    <p>Your favourite menu item is {{ infoCtrl.info.favourite }}</p>
+  </div>
+</div>
+<div class="menu-item-tile col-md-6">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="menu-item-photo">
+        <div>{{infoCtrl.menuItem.short_name}}</div>
+        <img class="img-responsive" width="250" height="150" ng-src="images/menuItems/{{ infoCtrl.info.data.short_name }}.jpg" alt="{{ infoCtrl.info.data.name }}">
+      </div>
+    </div>
+    <div class="menu-item-description col-sm-7">
+      <h3 class="menu-item-title">{{ infoCtrl.info.data.name }}</h3>
+      <p class="menu-item-details">{{ infoCtrl.info.data.description}}</p>
+    </div>
+  </div>
+  <hr class="visible-xs">
+</div>

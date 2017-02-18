@@ -2,21 +2,31 @@
   "use strict";
 
   angular.module('common')
-    .service('SignupService', SignupService);
+    .service('DataService', DataService);
 
-  SignupService.$inject = ['$http', 'ApiPath'];
-  function SignupService($http, ApiPath) {
+  DataService.$inject = ['$http', 'ApiPath'];
+  function DataService($http, ApiPath) {
     var service = this;
+
+    service.info = {};
 
     service.validateShortName = function (shortName) {
       return $http
-        // .get(APIBasePath + '/menu_items/' + shortName + '.json')
-        .get(ApiPath + '/categories/' + shortName + '.json')
+        .get(ApiPath + '/menu_items/' + shortName + '.json')
         .then(function(response) {
-          return true;
+          return response;
         }, function (response) {
           return false;
         });
+    };
+
+    service.saveInformation = function (information) {
+      service.info = information;
+      service.info.saved = true;
+    };
+
+    service.retrieveInformation = function () {
+      return service.info;
     };
   }
 

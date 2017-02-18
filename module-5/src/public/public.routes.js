@@ -21,10 +21,24 @@
         templateUrl: 'src/public/home/home.html'
       })
       .state('public.signup', {
-        url: '/',
+        url: '/signup',
         templateUrl: 'src/public/info/signup.html',
         controller: 'SignupController',
         controllerAs: 'signupCtrl'
+      })
+      .state('public.info', {
+        url: '/info',
+        templateUrl: 'src/public/info/info.html',
+        controller: 'InfoController',
+        controllerAs: 'infoCtrl'
+      })
+      .state('public.info.success', {
+        url: '/info/success',
+        templateUrl: 'src/public/info/success.html'
+      })
+      .state('public.info.error', {
+        url: '/info/error',
+        templateUrl: 'src/public/info/error.html'
       })
       .state('public.menu', {
         url: '/menu',

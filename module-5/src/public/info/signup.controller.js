@@ -4,19 +4,31 @@
   angular.module('public')
     .controller('SignupController', SignupController);
 
-  SignupController.$inject = ['SignupService'];
-  function SignupController(SignupService) {
+  SignupController.$inject = ['DataService'];
+  function SignupController(DataService) {
     var signupCtrl = this;
 
-    signupCtrl.itemExist = true;
+    signupCtrl.completed = true;
+    signupCtrl.ismessage = false;
+    signupCtrl.info = DataService.retrieveInformation();
 
-    signupCtrl.submit = function (shortName) {
-      var validated = SignupService.validateShortName(shortName);
-      validated.then(function(response) {
-        if (response === true) {
-          signupCtrl.itemExist = true;
+    signupCtrl.submit = function (info) {
+  
+      var promise = DataService.validateShortName(info.favourite);
+
+      promise.then(function(response) {
+        // message not empty then display it
+        signupCtrl.ismessage = true;
+        // send response accordingly
+        if (response !== false) {
+          signupCtrl.completed = true;
+          signupCtrl.message = "Your information has been saved";
+          signupCtrl.info.data = response.data;
+          // save registration information
+          DataService.saveInformation(info);
         } else {
-          signupCtrl.itemExist = false;
+          signupCtrl.completed = false;
+          signupCtrl.message = "No such menu number exists";
         };
       });
     };
